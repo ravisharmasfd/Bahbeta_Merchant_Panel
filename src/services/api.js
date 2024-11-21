@@ -2,7 +2,7 @@ import axios from "axios";
 
 let token = localStorage.getItem("token")
 
-const API_URL = "http://localhost:8080/"
+const API_URL = "https://behbeta-backend.vercel.app/api/"
 // const API_URL = "https://baddie.pro/"
 
 axios.defaults.baseURL = API_URL;
