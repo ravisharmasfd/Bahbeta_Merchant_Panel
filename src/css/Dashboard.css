@@ -1,0 +1,625 @@
+div#basic-navbar-nav {
+    justify-content: end;
+}
+.dropdown-toggle::after {
+    margin-left: 1.255em !important;
+}
+.gap{
+    gap: 10px;
+}
+/* Sidebar Css */
+.sidebar {
+    width: 100%;
+    max-width: 250px;
+    background-color: #fff;
+    border-right: 1px solid #dee2e6;
+    border-top: 1px solid #dee2e6 !important;
+    z-index: 9999;   
+    margin-top: 60px;
+}
+.mt-auto.p-3 {
+    position: fixed;
+    bottom: 0;
+    max-width: 250px;
+    left: 0;
+}
+  .sidebar-link {
+    
+    font-size: 16px;
+    color: #000 !important;
+    font-weight: 600 !important;
+    display: flex;
+    align-items: center;
+  }
+  
+  .sidebar-link:hover {
+    background-color: #e9ecef;
+    color: #007bff !important;
+    text-decoration: none;
+  }
+  
+  .download-app-section {
+    padding: 10px;
+    border-top: 1px solid #dee2e6;
+  }
+  
+  .download-icon {
+    color: #007bff;
+  }
+  
+  .btn-primary {
+    width: 100%;
+  }
+  
+/* End Sidebar Css */
+
+/* Invoice Table Css *//* General Invoice Table Layout */
+.invoice-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  .flex {
+    display: flex;
+    align-items: center;
+}
+  .sidebar-link {
+    position: relative;
+    padding-bottom: 10px; /* Adds space between text and image */
+    font-weight: bold;
+  }
+  
+  .sidebar-link .highlight-image {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%; /* Ensure the image stretches to the width of the text */
+    height: 3px; /* You can adjust this based on the image height */
+  }
+  
+  .table-responsive {
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    background-color: #fff;
+  }
+  
+  /* Header and Buttons */
+  .d-flex.justify-content-between {
+    margin-bottom: 20px;
+  }
+  
+  .table-header-buttons button {
+    margin-left: 10px;
+  }
+  .table-header.mb-3.row {
+    border-bottom: 1px solid #ccc;
+}
+  /* Search Bar */
+  .form-control[type="search"] {
+    width: 300px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  /* Tabs */
+
+  
+  .invoice-tabs .nav-item {
+    margin-right: 10px;
+  }
+  
+  .invoice-tabs .nav-link {
+    color: #5a5a5a;
+    font-weight: 500;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .invoice-tabs .nav-link.active {
+    color: #007bff;
+    font-weight: 700;
+    background-color: #e7f1ff;
+  }
+  
+  /* Table */
+  .invoice-table thead th {
+    color: #333;
+    font-weight: 600;
+    text-align: left;
+    padding: 15px;
+    border-bottom: 1px solid #eaeaea;
+  }
+  
+  .invoice-table tbody td {
+    padding: 15px;
+    vertical-align: middle;
+    border-bottom: 1px solid #eaeaea;
+  }
+  
+  /* Links and Actions */
+  .invoice-table tbody td a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .invoice-table tbody td a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Badge Styles for Invoice Status */
+  .invoice-status {
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 12px;
+    text-align: center;
+  }
+  
+  .invoice-status[bg='success'] {
+    background-color: #28a745;
+    color: #fff;
+  }
+  
+  .invoice-status[bg='danger'] {
+    background-color: #dc3545;
+    color: #fff;
+  }
+  
+  .invoice-status[bg='warning'] {
+    background-color: #ffc107;
+    color: #fff;
+  }
+  
+  /* Pagination */
+  .pagination {
+    padding: 10px 0;
+    border-top: 1px solid #eaeaea;
+  }
+  
+  .pagination-controls button {
+    margin-left: 5px;
+  }
+  
+  .pagination-controls button {
+    border-radius: 50%;
+    min-width: 40px;
+    min-height: 40px;
+    text-align: center;
+    border: 1px solid #007bff;
+    color: #007bff;
+  }
+  
+  .pagination-controls button:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .items-per-page {
+    width: 60px;
+    border-radius: 8px;
+  }
+  
+  /* Dropdown */
+  .action-icon {
+    background: transparent;
+    border: none;
+  }
+  
+  .action-icon:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .dropdown-menu {
+    min-width: 150px;
+  }
+  
+  .dropdown-item {
+    color: #333;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .form-control[type="search"] {
+      width: 100%;
+    }
+  
+    .pagination-controls button {
+      min-width: 35px;
+      min-height: 35px;
+    }
+  
+    .d-flex.justify-content-between {
+      flex-direction: column;
+    }
+  
+    .table-header-buttons {
+      margin-top: 15px;
+    }
+  }
+  
+  /* End Ivoice Table css */
+
+  /* InvoiceOverview Css */
+  .invoice-overview {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .overview-background {
+    background-color: #f0f5ff; /* Light blue or any color you want */
+    padding: 50px 20px;
+    border-radius: 0 0 30px 30px; /* Rounded top corners */
+  }
+  
+  .header-title {
+    font-weight: bold;
+    font-size: 1.5rem;
+  }
+  
+  .header-filters .form-select {
+    width: auto;
+  }
+  
+  .cards-container {
+    background-color: transparent;
+    margin-top: -40px;
+    max-width: 95%;
+    width: 100%;
+    margin-inline: auto;
+}
+  
+  .overview-card {
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    margin-bottom: 20px;
+  }
+  
+  .overview-card h5 {
+    font-weight: 500;
+    color: #6c757d;
+  }
+  
+  .overview-card .amount {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  .cards-container .padding-left {
+    padding: 0 15px 0 0 !important;
+  }
+  
+  .cards-container .no-padding-left {
+    padding-left: 0; /* Ensure no padding for the first column */
+  }
+  
+  .overview-card img {
+    width: 30px; 
+    height: 30px;
+    object-fit: contain;
+  }
+  
+  .overview-card.overdue {
+    border-bottom: 5px solid red;
+  }
+  
+  .overview-card.awaiting {
+    border-bottom: 5px solid orange;
+  }
+  
+  .overview-card.draft {
+    border-bottom: 5px solid yellow;
+  }
+  
+  .overview-card.paid {
+    border-bottom: 5px solid green;
+  }
+      
+  /* End InvoiceOverview Css */
+
+
+
+
+  /* Create Invoice css */
+  .container {
+    max-width: 950px;
+    margin: 0 auto; /* Center container */
+  }
+  
+  .invoice-form {
+    border: 1px solid #AAADB1;
+    border-radius: 10px;
+    padding: 1.5rem; /* Add padding for inner content */
+    background-color: #fff;
+  }
+  .voice-option .form-select{
+    width: 20% !important;
+ }
+ input.form-control.form-input.ammount {
+    width: 75% !important;
+}
+  .mr-2 {
+    margin-right: 1rem;
+  }
+ .voice-option input[type="text"]{
+    width: 80%;
+ }
+  
+  .bg-sh {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+  
+  .card-header h4 {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .input-group-text {
+    background-color: #f5f5f5;
+    font-weight: bold;
+  }
+  
+  .form-control {
+    border-radius: 5px;
+    height: 45px; /* Ensure consistent height for form inputs */
+  }
+  
+  .btn-light {
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    color: #495057;
+    padding: 0.5rem 1rem;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+    padding: 0.5rem 1.5rem;
+  }
+  
+  .text-danger {
+    color: #dc3545;
+  }
+  
+  textarea.form-control {
+    resize: none;
+    height: 100px;
+  }
+  
+  /* Align labels to the left */
+  .form-label {
+    text-align: left;
+    display: block;
+    margin-bottom: .5rem;
+    font-weight: bold;
+  }
+  
+  /* Make form inputs take full width */
+  .form-input {
+    width: 100%;
+  }
+  
+  /* Style for input groups to have consistent widths */
+  .input-group {
+    display: flex;
+    align-items: center;
+  }
+  
+  .input-group-text {
+    width: 120px; /* Adjust this width to match your desired width */
+    text-align: center;
+  }
+  
+  .form-select {
+    width: 120px; /* Match this width with the input-group-text */
+  }
+  
+  .form-control {
+    flex: 1; /* Allow form-control to take up the remaining space */
+  }
+  
+  .mr-2 {
+    margin-right: 1rem;
+  }
+  
+  .input-group>.form-control, .input-group>.form-floating, .input-group>.form-select {
+    position: relative;
+    width: 20%;
+    min-width: 0;
+    flex:unset !important;
+  }
+  
+  .form-check {
+    margin-right: 1rem;
+  }
+  
+  .form-check-label {
+    margin-left: 0.3rem; /* Space between checkbox and label */
+  }
+  
+  .text-end {
+    text-align: right;
+  }
+  button.btn.btn-light.clr-blu {
+    background: #0d6efd;
+    color: #fff;
+}
+  
+  .me-2 {
+    margin-right: 1rem;
+  }
+    /* End Create inoice Css */
+
+
+  /* Recreate Invoice Css */
+  /* Custom styles for RecurringInvoice component */
+.container {
+    max-width: 800px;
+  }
+  
+  /* Global container for main content */
+.main-content {
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  /* Card styling */
+  .card {
+    border-radius: 10px;
+    border: 1px solid #ddd;
+  }
+  
+  /* Card header */
+  .card-header {
+    font-size: 1.5rem;
+    font-weight: 500;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  /* Form label */
+  .form-label {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+  
+  /* Input groups and form controls */
+  .form-control, .form-select {
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+  }
+  
+  .input-group-text {
+    background-color: #f5f5f5;
+    border-radius: 5px 0 0 5px;
+    border: 1px solid #ddd;
+  }
+  
+  /* Icons in input-group */
+  .input-group-text i {
+    font-size: 1.2rem;
+    color: #6c757d;
+  }
+  
+  /* Checkboxes */
+  .form-check-input {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  
+  /* Language options styling */
+  .form-check-label {
+    margin-right: 10px;
+    font-size: 1rem;
+  }
+  
+  /* Buttons styling */
+  .btn-secondary {
+    background-color: #e2e6ea;
+    color: #333;
+    border-radius: 5px;
+    padding: 10px 20px;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 20px;
+  }
+  
+  /* Checkbox alignment for "Send Invoice Via" */
+  .form-check-inline {
+    margin-right: 20px;
+  }
+  
+  /* Textarea styling */
+  textarea.form-control {
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    padding: 10px;
+  }
+  
+  /* Container spacing */
+  .container {
+    background-color: white;
+    border-radius: 10px;
+  }
+  
+  /* Spacing for the header in the form */
+  h4 {
+    font-weight: bold;
+  }
+  
+  /* Padding and alignment for the checkbox section */
+  .form-check-input {
+    margin-right: 10px;
+  }
+  
+  .form-check-inline label {
+    font-size: 1rem;
+    margin-left: 5px;
+  }
+  
+  /* Adjustments for Save and Send buttons */
+  .btn {
+    font-size: 1rem;
+    padding: 10px 20px;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  
+  .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+  }
+  
+  /* Margin adjustments for the main sections */
+  .mb-3 {
+    margin-bottom: 1.5rem;
+  }
+  
+  .mt-5 {
+    margin-top: 3rem;
+  }
+  .width-number{
+    width: 120px !important;
+  }
+  /* End Recreate Invoice Css */
+
+
+
+
+
+
+  .custom-toast-success {
+    background-color: #d4edda;
+    color: #155724;
+    border-left: 5px solid #155724;
+    padding: 15px;
+    border-radius: 5px;
+  }
+  
+  .custom-toast-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-left: 5px solid #721c24;
+    padding: 15px;
+    border-radius: 5px;
+  }
+  
+  .custom-toast-body {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  

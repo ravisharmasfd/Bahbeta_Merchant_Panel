@@ -1,0 +1,124 @@
+.container {
+    max-width: 950px;
+    margin: 0 auto; /* Center container */
+  }
+  
+  .invoice-form {
+    border: 1px solid #AAADB1;
+    border-radius: 10px;
+    padding: 1.5rem; /* Add padding for inner content */
+    background-color: #fff;
+  }
+  .voice-option .form-select{
+    width: 20% !important;
+ }
+ .form-input {
+    width: 75% !important;
+  }
+  .mr-2 {
+    margin-right: 1rem;
+  }
+ .voice-option input[type="text"]{
+    width: 80%;
+ }
+  
+  .bg-sh {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+  
+  .card-header h4 {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .input-group-text {
+    background-color: #f5f5f5;
+    font-weight: bold;
+  }
+  
+  .form-control {
+    border-radius: 5px;
+    height: 45px; /* Ensure consistent height for form inputs */
+  }
+  
+  .btn-light {
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    color: #495057;
+    padding: 0.5rem 1rem;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+    padding: 0.5rem 1.5rem;
+  }
+  
+  .text-danger {
+    color: #dc3545;
+  }
+  
+  textarea.form-control {
+    resize: none;
+    height: 100px;
+  }
+  
+  /* Align labels to the left */
+  .form-label {
+    text-align: left;
+    display: block;
+    margin-bottom: .5rem;
+    font-weight: bold;
+  }
+  
+  /* Make form inputs take full width */
+  .form-input {
+    width: 100%;
+  }
+  
+  /* Style for input groups to have consistent widths */
+  .input-group {
+    display: flex;
+    align-items: center;
+  }
+  
+  .input-group-text {
+    width: 120px; /* Adjust this width to match your desired width */
+    text-align: center;
+  }
+  
+  .form-select {
+    width: 120px; /* Match this width with the input-group-text */
+  }
+  
+  .form-control {
+    flex: 1; /* Allow form-control to take up the remaining space */
+  }
+  
+  .mr-2 {
+    margin-right: 1rem;
+  }
+  
+  .input-group>.form-control, .input-group>.form-floating, .input-group>.form-select {
+    position: relative;
+    width: 20%;
+    min-width: 0;
+    flex:unset !important;
+  }
+  
+  .form-check {
+    margin-right: 1rem;
+  }
+  
+  .form-check-label {
+    margin-left: 0.3rem; /* Space between checkbox and label */
+  }
+  
+  .text-end {
+    text-align: right;
+  }
+  
+  .me-2 {
+    margin-right: 1rem;
+  }
