@@ -392,7 +392,7 @@ const RecurringInvoice = () => {
                               />
                               <label htmlFor="sendViaEmail">{t('Send via Email')}</label>
                             </div>
-                            <div className="col-md-4">
+                            {/* <div className="col-md-4">
                               <input
                                 type="checkbox"
                                 className="form-check-input me-1"
@@ -402,7 +402,7 @@ const RecurringInvoice = () => {
                                 onChange={formik.handleChange}
                               />
                               <label htmlFor="sendViaWhatsApp">{t('Send via WhatsApp')}</label>
-                            </div>
+                            </div> */}
                           </div>
                         </div>
 

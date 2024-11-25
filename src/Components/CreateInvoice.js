@@ -346,7 +346,7 @@ const CreateInvoice = () => {
                               {t('Email')}
                             </label>
                           </div>
-                          <div className="form-check form-check-inline">
+                          {/* <div className="form-check form-check-inline">
                             <input
                               className="form-check-input"
                               type="checkbox"
@@ -357,7 +357,7 @@ const CreateInvoice = () => {
                             <label className="form-check-label" htmlFor="whatsapp">
                               {t('WhatsApp')}
                             </label>
-                          </div>
+                          </div> */}
                         </div>
                         <div className="col-md-6 text-end">
                           <button type="button" className="btn btn-light me-2" onClick={saveDraft}>
