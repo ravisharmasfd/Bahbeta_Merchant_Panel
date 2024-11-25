@@ -29,7 +29,7 @@ const Sidebar = () => {
           </Dropdown.Menu>
         </Dropdown>
 
-        <Nav.Link as={Link} to="/items" className="sidebar-link">
+        {/* <Nav.Link as={Link} to="/items" className="sidebar-link">
           <FaBox className="me-2" /> Items
         </Nav.Link>
         <Nav.Link as={Link} to="/users" className="sidebar-link">
@@ -37,7 +37,7 @@ const Sidebar = () => {
         </Nav.Link>
         <Nav.Link as={Link} to="/reports" className="sidebar-link">
           <FaChartPie className="me-2" /> Reports
-        </Nav.Link>
+        </Nav.Link> */}
       </Nav>
 
       {/* Download App Section */}

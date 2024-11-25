@@ -114,3 +114,15 @@ export const CreateInvoiceApi = async(data) => {
         throw (error)
     }
 }
+
+
+export const GetInvoiceStatsApi = async(query) => {
+  try {
+      const response = await authApi.get("invoice/stats");
+      console.log("🚀 ~ GetInvoiceStatsApi ~ response:", response?.data)
+      return response.data
+     
+  } catch (error) {
+      throw (error)
+  }
+}

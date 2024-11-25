@@ -3,12 +3,13 @@ import axios from 'axios';
 import { Table, Badge, Dropdown, Button, Form, Nav, InputGroup } from 'react-bootstrap';
 import { FaEllipsisV, FaPlus, FaSearch } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
-import { DeleteInvoiceApi, GetInvoiceApi } from '../services/api';
+import { DeleteInvoiceApi, GetInvoiceApi, GetInvoiceStatsApi } from '../services/api';
 import moment from 'moment';
 
 const InvoiceTable = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('drafts');
+  const [stats,setStats] = useState(null)
   const [customerName, setCustomerName] = useState('');
   const [filterStatus, setFilterStatus] = useState('All');
   const [invoiceData, setInvoiceData] = useState([]);
@@ -35,12 +36,16 @@ const InvoiceTable = () => {
       console.log("🚀 ~ fetchInvoices ~ response:", response)
       setInvoiceData(response.invoices);
       setTotal({ page: response.totalPages, isNext: response.isNext, isPrevious: response.isPrevious })
+      const response1 = await GetInvoiceStatsApi()
+      // setStats(response1)
+      console.log("🚀 ~ fetchInvoices ~ response:", response1)
       setLoading(false);
     } catch (error) {
       console.error('Error fetching invoice data:', error);
       setLoading(false);
     }
   };
+ 
   useEffect(() => {
 
 
@@ -114,7 +119,7 @@ const InvoiceTable = () => {
         </div>
       </div>
 
-      <div className="table-header mb-3 row">
+      {/* <div className="table-header mb-3 row">
         {activeTab != "drafts" ? <div className="col-md-8 d-flex align-items-center">
           <ul className="invoice-tabs nav">
             <li className="nav-item">
@@ -170,7 +175,7 @@ const InvoiceTable = () => {
             />
           </InputGroup>
         </div>
-      </div>
+      </div> */}
 
       <div className="table-responsive">
         <Table hover className="invoice-table">
