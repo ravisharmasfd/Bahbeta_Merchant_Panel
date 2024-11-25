@@ -62,7 +62,14 @@ const InvoiceTable = () => {
       navigate("/recurring-invoice",{state:invoice})
     }
   }
-
+  const handleCopy = async (id) => {
+    try {
+      await navigator.clipboard.writeText(id); // Copy text to clipboard
+      alert("copied successfully")
+    } catch (err) {
+      console.error("Failed to copy text:", err);
+    }
+  };
 
   return (
     <div className="invoice-container">
@@ -191,17 +198,19 @@ const InvoiceTable = () => {
                 {activeTab != "drafts" && <td>
                   <Badge
                     pill
-                    bg={invoice?.status === 'Paid' ? 'success' : invoice?.status === 'Overdue' ? 'danger' : 'warning'}
+                    bg={invoice?.status == 2 ? 'success' : invoice?.status == 1 ? 'danger' : 'warning'}
                     className="invoice-status"
                   >
-                    {invoice?.status}
+                    {invoice?.status == 2 ? "Complete":"Pending"}
                   </Badge>
                 </td>}
                 <td>{invoice?.amount}</td>
                 <td>{invoice?.remark}</td>
                 <td>
                   <div className='flex'>
-                    <Dropdown.Item href="#">
+                    <Dropdown.Item onClick={()=>{
+handleCopy(invoice._id)
+                    }}>
                       <img
                         src="../images/copy.png"
                         alt="Copy"

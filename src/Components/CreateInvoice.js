@@ -241,7 +241,6 @@ const CreateInvoice = () => {
                                 onChange={(e) => setAmount(e.target.value)}
                                 value={amount}
                                 min={0}
-                                step={2}
                               />
                             </div>
                           </div>

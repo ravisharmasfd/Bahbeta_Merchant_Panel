@@ -3,7 +3,9 @@ import axios from "axios";
 let token = localStorage.getItem("token")
 
 const API_URL = "https://behbeta-backend.vercel.app/api/"
-// const API_URL = "https://baddie.pro/"
+console.log(process.env.REACT_APP_BACKEND_URL)
+// const API_URL = "http://localhost:8080/api/"
+
 
 axios.defaults.baseURL = API_URL;
 let authApi = axios.create({
@@ -64,7 +66,17 @@ export const CreateInvoiceApi = async(data) => {
   }
   export const getInvoiceSessionId = async(id) => {
     try {
-        const response = await authApi.get("invoice/session/"+id);
+        const response = await axios.get("session/"+id);
+        console.log("🚀 ~ getInvoiceSessionId ~ response:", response)
+        return response.data
+       
+    } catch (error) {
+        throw (error)
+    }
+  }
+  export const conformOrder = async(id) => {
+    try {
+        const response = await axios.get("status/"+id);
         console.log("🚀 ~ getInvoiceSessionId ~ response:", response)
         return response.data
        

@@ -41,13 +41,16 @@ const App = () => {
     <I18nextProvider i18n={i18n}>  {/* Wrap the app with I18nextProvider */}
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<SecureRoute><Dashboard /></SecureRoute>} />
           <Route path="/payment" element={<TransactionPage/>} />
           <Route path="/transaction" element={<PaymentPage/>} />
 
           <Route path="/login" element={<GuestRoute><Login /></GuestRoute>} />
           <Route path="create-invoice" element={<SecureRoute><CreateInvoice /></SecureRoute>} />
           <Route path="recurring-invoice" element={<SecureRoute><RecurringInvoice /></SecureRoute>} />
+          <Route path="/" element={<SecureRoute><Dashboard /></SecureRoute>} />
+          <Route path="*" element={<>
+            <div>
+              404 page</div></>} />
         </Routes>
       </BrowserRouter>
     </I18nextProvider>
