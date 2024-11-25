@@ -64,7 +64,7 @@ const InvoiceTable = () => {
   }
   const handleCopy = async (id) => {
     try {
-      await navigator.clipboard.writeText(id); // Copy text to clipboard
+      await navigator.clipboard.writeText(`https://bahbeta-merchant-panel.vercel.app//payment?sessionId=${id}`); // Copy text to clipboard
       alert("copied successfully")
     } catch (err) {
       console.error("Failed to copy text:", err);
