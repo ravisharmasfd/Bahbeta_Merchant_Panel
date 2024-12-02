@@ -340,8 +340,20 @@ div#basic-navbar-nav {
   .voice-option .form-select{
     width: 20% !important;
  }
+ .css-13cymwt-control {
+   min-height: 45px !important;
+ }
+ .inputMobile {
+  width: 60% !important;
+ }
+ .input-group.input-group-text {
+  padding: 10px;
+ }
+ .self-end {
+  align-self: end;
+ }
  input.form-control.form-input.ammount {
-    width: 75% !important;
+    width: 70% !important;
 }
   .mr-2 {
     margin-right: 1rem;

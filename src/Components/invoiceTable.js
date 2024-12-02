@@ -8,7 +8,7 @@ import moment from 'moment';
 
 const InvoiceTable = () => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('drafts');
+  const [activeTab, setActiveTab] = useState('invoices');
   const [stats,setStats] = useState(null)
   const [customerName, setCustomerName] = useState('');
   const [filterStatus, setFilterStatus] = useState('All');
@@ -47,10 +47,9 @@ const InvoiceTable = () => {
   };
  
   useEffect(() => {
-
-
     fetchInvoices();
   }, [activeTab,customerName,limit,page]);
+
   const deleteDraft=async(id)=>{
     try {
       const res = await DeleteInvoiceApi(id);
@@ -67,14 +66,6 @@ const InvoiceTable = () => {
       navigate("/recurring-invoice",{state:invoice})
     }
   }
-  const handleCopy = async (id) => {
-    try {
-      await navigator.clipboard.writeText(`https://bahbeta-merchant-panel.vercel.app//payment?sessionId=${id}`); // Copy text to clipboard
-      alert("copied successfully")
-    } catch (err) {
-      console.error("Failed to copy text:", err);
-    }
-  };
 
   return (
     <div className="invoice-container">
@@ -87,8 +78,42 @@ const InvoiceTable = () => {
               className={`sidebar-link position-relative ${activeTab === 'invoices' ? 'active' : ''}`}
               onClick={() => setActiveTab('invoices')}
             >
-              Invoices
+              All
               {activeTab === 'invoices' && (
+                <img src="../images/highlight.png" className="highlight-image" alt="highlight" />
+              )}
+            </Nav.Link>
+            <Nav.Link
+              as={Link}
+              to="#"
+              className={`sidebar-link ${activeTab === 'paid' ? 'active' : ''}`}
+              onClick={() => setActiveTab('paid')}
+            >
+              Paid
+              {activeTab === 'paid' && (
+                <img src="../images/highlight.png" className="highlight-image" alt="highlight" />
+              )}
+            </Nav.Link>
+
+            <Nav.Link
+              as={Link}
+              to="#"
+              className={`sidebar-link ${activeTab === 'awaiting' ? 'active' : ''}`}
+              onClick={() => setActiveTab('awaiting')}
+            >
+              Pending
+              {activeTab === 'awaiting' && (
+                <img src="../images/highlight.png" className="highlight-image" alt="highlight" />
+              )}
+            </Nav.Link>
+            <Nav.Link
+              as={Link}
+              to="#"
+              className={`sidebar-link ${activeTab === 'overdue' ? 'active' : ''}`}
+              onClick={() => setActiveTab('overdue')}
+            >
+              Overdue
+              {activeTab === 'overdue' && (
                 <img src="../images/highlight.png" className="highlight-image" alt="highlight" />
               )}
             </Nav.Link>
@@ -187,7 +212,7 @@ const InvoiceTable = () => {
               <th>Customer</th>
               <th>Mobile Number</th>
               {activeTab != "drafts" && <th>Status</th>}
-              <th>Total Amount</th>
+              <th>Amount</th>
               <th>Remarks</th>
               <th>Actions</th>
             </tr>
@@ -209,11 +234,11 @@ const InvoiceTable = () => {
                     {invoice?.status == 2 ? "Complete":"Pending"}
                   </Badge>
                 </td>}
-                <td>{invoice?.amount}</td>
+                <td>{invoice?.amount} BHD</td>
                 <td>{invoice?.remark}</td>
                 <td>
                   <div className='flex'>
-                    <Dropdown.Item onClick={()=>{
+                    {/* <Dropdown.Item onClick={()=>{
 handleCopy(invoice._id)
                     }}>
                       <img
@@ -222,21 +247,25 @@ handleCopy(invoice._id)
                         className="me-2"
                         style={{ width: '16px', height: '16px' }}
                       />
-                    </Dropdown.Item>
-                    <Dropdown align="end">
-                      <Dropdown.Toggle variant="light" id="dropdown-basic" className="action-icon">
-                        <FaEllipsisV />
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        {/* <Dropdown.Item href="#">View</Dropdown.Item> */}
-                        <Dropdown.Item onClick={()=>{
-                          handleEdit(invoice)
-                        }} >Edit</Dropdown.Item>
-                        {activeTab == "drafts" && <Dropdown.Item onClick={()=>{
-                          deleteDraft(invoice?._id)
-                        }} >Delete</Dropdown.Item>}
-                      </Dropdown.Menu>
-                    </Dropdown>
+                    </Dropdown.Item> */}
+           {
+            invoice?.status !=2 && 
+            <Dropdown align="end">
+            <Dropdown.Toggle variant="light" id="dropdown-basic" className="action-icon">
+              <FaEllipsisV />
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              {/* <Dropdown.Item href="#">View</Dropdown.Item> */}
+             {<Dropdown.Item onClick={()=>{
+                handleEdit(invoice)
+              }} >Edit</Dropdown.Item>} 
+              {activeTab == "drafts" && <Dropdown.Item onClick={()=>{
+                deleteDraft(invoice?._id)
+              }} >Delete</Dropdown.Item>}
+            </Dropdown.Menu>
+          </Dropdown>
+           }         
+         
                   </div>
                 </td>
               </tr>

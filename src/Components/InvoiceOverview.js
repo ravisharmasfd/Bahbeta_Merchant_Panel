@@ -56,6 +56,30 @@ const InvoiceOverview = () => {
       {/* Overview Cards */}
       <div className="cards-container">
   <Row>
+  <Col md={3} className="padding-left">
+      <Card className="overview-card paid">
+        <Card.Body className="p-2">
+          <div className="d-flex justify-content-between">
+            <h5>Paid Invoice (33)</h5>
+            <img src="../images/Frame.png" alt="Icon" />
+          </div>
+          <h3 className="amount">{stats?.totalRevenue || 0} BHD</h3>
+        </Card.Body>
+      </Card>
+    </Col>
+
+    <Col md={3} className="padding-left">
+      <Card className="overview-card awaiting">
+        <Card.Body className="p-2">
+          <div className="d-flex justify-content-between">
+            <h5>Pending Invoice (5)</h5>
+            <img src="../images/Frame.png" alt="Icon" />
+          </div>
+          <h3 className="amount">{stats?.totalRevenuePending || 0} BHD</h3>
+        </Card.Body>
+      </Card>
+    </Col>
+    
     <Col md={3} className="no-padding-left">
       <Card className="overview-card overdue">
         <Card.Body className="p-2">
@@ -68,17 +92,7 @@ const InvoiceOverview = () => {
       </Card>
     </Col>
 
-    <Col md={3} className="padding-left">
-      <Card className="overview-card awaiting">
-        <Card.Body className="p-2">
-          <div className="d-flex justify-content-between">
-            <h5>Awaiting Payment (5)</h5>
-            <img src="../images/Frame.png" alt="Icon" />
-          </div>
-          <h3 className="amount">{stats?.totalRevenuePending || 0} BHD</h3>
-        </Card.Body>
-      </Card>
-    </Col>
+ 
 
     <Col md={3} className="padding-left">
       <Card className="overview-card draft">
@@ -92,17 +106,7 @@ const InvoiceOverview = () => {
       </Card>
     </Col>
 
-    <Col md={3} className="padding-left">
-      <Card className="overview-card paid">
-        <Card.Body className="p-2">
-          <div className="d-flex justify-content-between">
-            <h5>Get Paid (33)</h5>
-            <img src="../images/Frame.png" alt="Icon" />
-          </div>
-          <h3 className="amount">{stats?.totalRevenue || 0} BHD</h3>
-        </Card.Body>
-      </Card>
-    </Col>
+  
   </Row>
 </div>
     </div>

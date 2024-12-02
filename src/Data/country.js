@@ -4,6 +4,7 @@ export const countryOptions = [
   { value: '+965', label: 'Kuwait (+965)' },
   { value: '+971', label: 'UAE (+971)' },
   { value: '+974', label: 'Qatar (+974)' },
+  { value: '+968', label: 'Oman (+968)' },
   
   // Full list of country codes
   { value: '+93', label: 'Afghanistan (+93)' },
@@ -161,7 +162,6 @@ export const countryOptions = [
   { value: '+850', label: 'North Korea (+850)' },
   { value: '+1670', label: 'Northern Mariana Islands (+1-670)' },
   { value: '+47', label: 'Norway (+47)' },
-  { value: '+968', label: 'Oman (+968)' },
   { value: '+92', label: 'Pakistan (+92)' },
   { value: '+680', label: 'Palau (+680)' },
   { value: '+970', label: 'Palestine (+970)' },
