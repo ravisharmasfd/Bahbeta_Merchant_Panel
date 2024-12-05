@@ -23,7 +23,7 @@ const CreateInvoice = () => {
   const draftDataCountryCode = countryOptions.find(item => {
     return item?.value == draftData?.country_code
   })
-  console.log("🚀 ~ draftDataCountryCode ~ draftDataCountryCode:", draftDataCountryCode)
+  console.log("🚀 ~ draftDataCountryCode ~ draftDataCountryCode:", countryOptions[0].value)
   console.log("🚀 ~ CreateInvoice ~ draftData:", draftData)
   const { t, i18n } = useTranslation();
   const [language, setLanguage] = useState('en');
@@ -268,32 +268,36 @@ const CreateInvoice = () => {
 
           {/* Mobile Number */}
           <div className="col-md-6">
-            <label className="form-label">
-              {t('Mobile Number')} <span className="text-danger">*</span>
-            </label>
-            <div className="input-group voice-option">
-            <Select
-          options={countryOptions}
-          placeholder={t('Select country code')}
-          isSearchable
-          value={formik.values.countryCode}
-          onChange={(selectedOption) => formik.setFieldValue('countryCode', selectedOption.value)}
-          onBlur={() => formik.setFieldTouched('countryCode', true)}
-        />
-              <input
-                name="mobileNumber"
-                type="text"
-                className="form-control form-input inputMobile"
-                placeholder={t('Enter Mobile Number')}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.mobileNumber}
-              />
-            </div>
-            {formik.touched.mobileNumber && formik.errors.mobileNumber ? (
-              <div className="text-danger">{formik.errors.mobileNumber}</div>
-            ) : null}
-          </div>
+  <label className="form-label">
+    {t('Mobile Number')} <span className="text-danger">*</span>
+  </label>
+  <div className="input-group voice-option">
+    <Select
+      options={countryOptions}
+      name="countryCode"
+      placeholder={t('Select country code')}
+      isSearchable
+      value={countryOptions.find(option => option.value === formik.values.countryCode)}
+      onChange={(selectedOption) => {
+        formik.setFieldValue('countryCode', selectedOption ? selectedOption.value : '');
+      }}
+      onBlur={() => formik.setFieldTouched('countryCode', true)}
+    />
+    <input
+      name="mobileNumber"
+      type="text"
+      className="form-control form-input inputMobile"
+      placeholder={t('Enter Mobile Number')}
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+      value={formik.values.mobileNumber}
+    />
+  </div>
+  {formik.touched.mobileNumber && formik.errors.mobileNumber ? (
+    <div className="text-danger">{formik.errors.mobileNumber}</div>
+  ) : null}
+</div>
+
 
           {/* Email */}
           <div className="col-md-6">
