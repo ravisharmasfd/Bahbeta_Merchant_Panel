@@ -98,11 +98,11 @@ const InvoiceTable = () => {
             <Nav.Link
               as={Link}
               to="#"
-              className={`sidebar-link ${activeTab === 'awaiting' ? 'active' : ''}`}
-              onClick={() => setActiveTab('awaiting')}
+              className={`sidebar-link ${activeTab === 'pending' ? 'active' : ''}`}
+              onClick={() => setActiveTab('pending')}
             >
               Pending
-              {activeTab === 'awaiting' && (
+              {activeTab === 'pending' && (
                 <img src="../images/highlight.png" className="highlight-image" alt="highlight" />
               )}
             </Nav.Link>
@@ -202,79 +202,87 @@ const InvoiceTable = () => {
         </div>
       </div> */}
 
-      <div className="table-responsive">
-        <Table hover className="invoice-table">
-          <thead>
-            <tr>
-              {/* <th><input type="checkbox" /></th> */}
-              <th>Invoice#</th>
-              <th>Invoice Date</th>
-              <th>Customer</th>
-              <th>Mobile Number</th>
-              {activeTab != "drafts" && <th>Status</th>}
-              <th>Amount</th>
-              <th>Remarks</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {invoiceData.map((invoice, index) => (
-              <tr key={index}>
-                {/* <td><input type="checkbox" /></td> */}
-                <td><a href="#">{((page - 1) * limit) + index + 1}</a></td>
-                <td>{moment(invoice.createdAt).format("DD MM YYYY")}</td>
-                <td>{invoice.name}</td>
-                <td>{invoice?.country_code + invoice?.mobile_no}</td>
-                {activeTab != "drafts" && <td>
-                  <Badge
-                    pill
-                    bg={invoice?.status == 2 ? 'success' : invoice?.status == 1 ? 'danger' : 'warning'}
-                    className="invoice-status"
-                  >
-                    {invoice?.status == 2 ? "Complete":"Pending"}
-                  </Badge>
-                </td>}
-                <td>{invoice?.amount} BHD</td>
-                <td>{invoice?.remark}</td>
-                <td>
-                  <div className='flex'>
-                    {/* <Dropdown.Item onClick={()=>{
-handleCopy(invoice._id)
-                    }}>
-                      <img
-                        src="../images/copy.png"
-                        alt="Copy"
-                        className="me-2"
-                        style={{ width: '16px', height: '16px' }}
-                      />
-                    </Dropdown.Item> */}
-           {
-            invoice?.status !=2 && 
-            <Dropdown align="end">
-            <Dropdown.Toggle variant="light" id="dropdown-basic" className="action-icon">
-              <FaEllipsisV />
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              {/* <Dropdown.Item href="#">View</Dropdown.Item> */}
-             {<Dropdown.Item onClick={()=>{
-                handleEdit(invoice)
-              }} >Edit</Dropdown.Item>} 
-              {activeTab == "drafts" && <Dropdown.Item onClick={()=>{
-                deleteDraft(invoice?._id)
-              }} >Delete</Dropdown.Item>}
-            </Dropdown.Menu>
-          </Dropdown>
-           }         
-         
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </div>
+<div className="table-responsive">
+  {invoiceData.length > 0 ? (
+    <Table hover className="invoice-table">
+      <thead>
+        <tr>
+          <th>Invoice#</th>
+          <th>Invoice Date</th>
+          <th>Customer</th>
+          <th>Mobile Number</th>
+          {activeTab !== "drafts" && <th>Status</th>}
+          <th>Amount</th>
+          <th>Remarks</th>
+          {activeTab !== "paid" && <th>Actions</th>}
+        </tr>
+      </thead>
+      <tbody>
+        {invoiceData.map((invoice, index) => (
+          <tr key={index}>
+            <td>
+              <a href="#">{(page - 1) * limit + index + 1}</a>
+            </td>
+            <td>{moment(invoice.createdAt).format("DD MM YYYY")}</td>
+            <td>{invoice.name}</td>
+            <td>{invoice?.country_code + invoice?.mobile_no}</td>
+            {activeTab !== "drafts" && (
+              <td>
+                <Badge
+                  pill
+                  bg={
+                    invoice?.status === 2
+                      ? "success"
+                      : invoice?.status === 1
+                      ? "danger"
+                      : "warning"
+                  }
+                  className="invoice-status"
+                >
+                  {invoice?.status === 2 ? "Complete" : "Pending"}
+                </Badge>
+              </td>
+            )}
+            <td>{invoice?.amount} BHD</td>
+            <td>{invoice?.remark}</td>
+            <td>
+              <div className="flex">
+                {invoice?.status !== 2 && (
+                  <Dropdown align="end">
+                    <Dropdown.Toggle
+                      variant="light"
+                      id="dropdown-basic"
+                      className="action-icon"
+                    >
+                      <FaEllipsisV />
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <Dropdown.Item onClick={() => handleEdit(invoice)}>
+                        Edit
+                      </Dropdown.Item>
+                      {activeTab === "drafts" && (
+                        <Dropdown.Item onClick={() => deleteDraft(invoice?._id)}>
+                          Delete
+                        </Dropdown.Item>
+                      )}
+                    </Dropdown.Menu>
+                  </Dropdown>
+                )}
+              </div>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </Table>
+  ) : (
+    <div className="text-center py-5">
+      <p>No data available</p>
+    </div>
+  )}
+</div>
 
-      <div className="pagination-container d-flex align-items-center justify-content-between mt-3">
+
+      {/* <div className="pagination-container d-flex align-items-center justify-content-between mt-3">
         <div className="pagination-info d-flex align-items-center">
           <span className="me-2">Showing</span>
           <Form.Select onChange={(e)=>{
@@ -307,7 +315,7 @@ handleCopy(invoice._id)
             setPage(page + 1)
           }} className="page-item"><a className="page-link" >Next</a></li>}
         </ul>
-      </div>
+      </div> */}
     </div>
   );
 };

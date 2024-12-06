@@ -2,9 +2,9 @@ import axios from "axios";
 
 let token = localStorage.getItem("token")
 
-const API_URL = "https://behbeta-backend.vercel.app/api/"
+// const API_URL = "https://behbeta-backend.vercel.app/api/"
 console.log(process.env.REACT_APP_BACKEND_URL)
-// const API_URL = "http://localhost:8080/api/"
+const API_URL = "http://localhost:8080/api/"
 
 
 axios.defaults.baseURL = API_URL;

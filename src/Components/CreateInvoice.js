@@ -32,16 +32,16 @@ const CreateInvoice = () => {
   const formik = useFormik({
     initialValues: {
       name: draftData ? draftData.name : "",
-      mobileNumber: draftData ? draftData.mobileNumber : "",
+      mobile_no: draftData ? draftData.mobile_no : "",
       email: draftData ? draftData.email : "",
       includeVAT: draftData ? draftData.includeVAT : true,
       sendVia: {
-        sms: draftData ? draftData.sendVia.sms : false,
-        email: draftData ? draftData.sendVia.email : false,
-        whatsapp: draftData ? draftData.sendVia.whatsapp : false,
+        sms: draftData ? draftData?.sendVia?.sms : false,
+        email: draftData ? draftData?.sendVia?.email : false,
+        whatsapp: draftData ? draftData?.sendVia?.whatsapp : false,
       },
       saveAsDraft: false,
-      countryCode: draftData ? draftData.countryCode : countryOptions[0].value,
+      country_code: draftData ? draftData.country_code : countryOptions[0].value,
       products: draftData?.products?.length > 0 
         ? draftData.products.map(product => ({
             productDescription: product.productDescription || '',
@@ -56,13 +56,13 @@ const CreateInvoice = () => {
             },
           ],
       overdue: draftData ? draftData.overdue : '',
-      remarks: draftData ? draftData.remarks : '',
+      remark: draftData ? draftData.remark : '',
       amount: draftData ? draftData.amount : '',
     }
 ,    
     validationSchema: Yup.object({
       name: Yup.string().required(t('Customer name is required.')),
-      mobileNumber: Yup.string()
+      mobile_no: Yup.string()
         .matches(/^\d{8,10}$/, t('Mobile number must be between 8 and 10 digits.'))
         .required(t('Mobile number is required.')),
       email: Yup.string().email(t('Invalid email address')).required(t('Email is required.')),
@@ -74,13 +74,12 @@ const CreateInvoice = () => {
         })
       ),
       overdue: Yup.date().required(t('Overdue date is required.')),
-      countryCode: Yup.object().required('Please select a country code'),
+      // country_code: Yup.object().required('Please select a country code'),
     }),
     onSubmit: (values) => {
-      // value.
       let value=calculateTotalAmount()
-      values.amount = formik.values.includeVAT ? parseFloat((value * 0.10).toFixed(2)) : 0; // Convert vatAmount back to a number
-      console.log('Form Submitted:', values);
+      console.log(value)
+      values.amount = formik.values.includeVAT ?parseFloat(value) + parseFloat((value * 0.10).toFixed(2)) : 0; // Convert vatAmount back to a number
         if (values.sendVia.sms || values.sendVia.email || values.sendVia.whatsapp) {
           sendInvoice(values);
         } else {
@@ -125,27 +124,16 @@ const CreateInvoice = () => {
 
 
   const saveDraft = async (data) => {
+    let value=calculateTotalAmount()
+    console.log(value)
+    data.amount = formik.values.includeVAT ?parseFloat(value) + parseFloat((value * 0.10).toFixed(2)) : 0; // Convert vatAmount back to a number
     try {
       data.saveAsDraft= true
-      // const body = {
-      //   amount,
-      //   vat,
-      //   unitCost,
-      //   productDescription,
-      //   quantity,
-      //   mobile_no: mobileNumber,
-      //   name,
-      //   remark,
-      //   email,
-      //   sendAtSMS: sendVia.sms,
-      //   sendAtMail: sendVia.email,
-      //   sendAtWhatsapp: sendVia.whatsapp,
-      //   saveAsDraft: true,
-      //   country_code: countryCode.value
-      // }
       if (draftData) {
         data.draftId = draftData._id
       }
+      data.amount = formik.values.includeVAT ? parseFloat(value)+ parseFloat((value * 0.10).toFixed(2)) : 0; // Convert vatAmount back to a number
+
       console.log("🚀 ~ saveDraft ~ body:", data)
       const response = await CreateInvoiceApi(data);
       console.log('Draft saved', response);
@@ -163,19 +151,6 @@ const CreateInvoice = () => {
   const sendInvoice = async (data) => {
     try {
       data.type=1
-      // const body = {
-      //   amount,
-      //   mobile_no: mobileNumber,
-      //   name,
-      //   remark,
-      //   email,
-      //   sendAtSMS: sendVia.sms,
-      //   sendAtMail: sendVia.email,
-      //   sendAtWhatsapp: sendVia.whatsapp,
-      //   saveAsDraft: false,
-      //   country_code: countryCode.value,
-      //   type: 1
-      // }
       if (draftData) {
         data.draftId = draftData._id
       }
@@ -274,27 +249,27 @@ const CreateInvoice = () => {
   <div className="input-group voice-option">
     <Select
       options={countryOptions}
-      name="countryCode"
+      name="country_code"
       placeholder={t('Select country code')}
       isSearchable
-      value={countryOptions.find(option => option.value === formik.values.countryCode)}
+      value={countryOptions.find(option => option.value === formik.values.country_code)}
       onChange={(selectedOption) => {
-        formik.setFieldValue('countryCode', selectedOption ? selectedOption.value : '');
+        formik.setFieldValue('country_code', selectedOption ? selectedOption.value : '');
       }}
-      onBlur={() => formik.setFieldTouched('countryCode', true)}
+      onBlur={() => formik.setFieldTouched('country_code', true)}
     />
     <input
-      name="mobileNumber"
+      name="mobile_no"
       type="text"
       className="form-control form-input inputMobile"
       placeholder={t('Enter Mobile Number')}
       onChange={formik.handleChange}
       onBlur={formik.handleBlur}
-      value={formik.values.mobileNumber}
+      value={formik.values.mobile_no}
     />
   </div>
-  {formik.touched.mobileNumber && formik.errors.mobileNumber ? (
-    <div className="text-danger">{formik.errors.mobileNumber}</div>
+  {formik.touched.mobile_no && formik.errors.mobile_no ? (
+    <div className="text-danger">{formik.errors.mobile_no}</div>
   ) : null}
 </div>
 
@@ -486,15 +461,15 @@ const CreateInvoice = () => {
   </div>
 </div>
 
-        {/* Remarks */}
+        {/* remark */}
         <div className="mb-3">
           <label className="form-label">{t('Remarks')}</label>
           <textarea
-            name="remarks"
+            name="remark"
             className="form-control form-input"
             rows="3"
             onChange={formik.handleChange}
-            value={formik.values.remarks}
+            value={formik.values.remark}
           />
         </div>
         <div className="row mt-4">

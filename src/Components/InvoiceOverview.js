@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Dropdown, Row, Col, Card } from 'react-bootstrap'; // Import necessary components from react-bootstrap
-import { FaFileExport } from 'react-icons/fa'; // For icons
+import { Row, Col, Card } from 'react-bootstrap'; // Import necessary components from react-bootstrap
 import { GetInvoiceStatsApi } from '../services/api';
 
 const InvoiceOverview = () => {
@@ -11,7 +10,6 @@ const InvoiceOverview = () => {
     try {
       setLoading(true)
       const response1 = await GetInvoiceStatsApi()
-      console.log("🚀 ~ fetchInvoices ~ response1:", response1)
       setStats(response1?.data)
       console.log("🚀 ~ fetchInvoices ~ response:", response1)
       setLoading(false);
@@ -60,7 +58,7 @@ const InvoiceOverview = () => {
       <Card className="overview-card paid">
         <Card.Body className="p-2">
           <div className="d-flex justify-content-between">
-            <h5>Paid Invoice (33)</h5>
+            <h5>Paid Invoice ({stats?.totalRevenueNumber || 0})</h5>
             <img src="../images/Frame.png" alt="Icon" />
           </div>
           <h3 className="amount">{stats?.totalRevenue || 0} BHD</h3>
@@ -72,7 +70,7 @@ const InvoiceOverview = () => {
       <Card className="overview-card awaiting">
         <Card.Body className="p-2">
           <div className="d-flex justify-content-between">
-            <h5>Pending Invoice (5)</h5>
+            <h5>Pending Invoice ({stats?.totalRevenuePendingNumber || 0})</h5>
             <img src="../images/Frame.png" alt="Icon" />
           </div>
           <h3 className="amount">{stats?.totalRevenuePending || 0} BHD</h3>
@@ -84,7 +82,7 @@ const InvoiceOverview = () => {
       <Card className="overview-card overdue">
         <Card.Body className="p-2">
           <div className="d-flex justify-content-between">
-            <h5>Overdue Invoices (13)</h5>
+            <h5>Overdue Invoices ({stats?.totalOverdueNumber || 0})</h5>
             <img src="../images/Frame.png" alt="Icon" />
           </div>
           <h3 className="amount">{stats?.totalOverdue || 0} BHD</h3>
@@ -98,7 +96,7 @@ const InvoiceOverview = () => {
       <Card className="overview-card draft">
         <Card.Body className="p-2">
           <div className="d-flex justify-content-between">
-            <h5>Draft Invoices (4)</h5>
+            <h5>Draft Invoices ({stats?.draftInvoiceTotalNumber || 0})</h5>
             <img src="../images/Frame.png" alt="Icon" />
           </div>
           <h3 className="amount">{stats?.draftInvoiceTotal || 0} BHD</h3>
