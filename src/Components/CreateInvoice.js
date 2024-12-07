@@ -35,15 +35,14 @@ const CreateInvoice = () => {
       mobile_no: draftData ? draftData.mobile_no : "",
       email: draftData ? draftData.email : "",
       includeVAT: draftData ? draftData.includeVAT : true,
-      sendVia: {
-        sms: draftData ? draftData?.sendVia?.sms : false,
-        email: draftData ? draftData?.sendVia?.email : false,
-        whatsapp: draftData ? draftData?.sendVia?.whatsapp : false,
-      },
+      sendAtSMS: draftData ? draftData?.sendAtSMS : false,
+      sendAtMail: draftData ? draftData?.sendAtMail : false,
+        sendAtWhatsapp: draftData ? draftData?.sendAtWhatsapp : false,
+     
       saveAsDraft: false,
       country_code: draftData ? draftData.country_code : countryOptions[0].value,
-      products: draftData?.products?.length > 0 
-        ? draftData.products.map(product => ({
+      product: draftData?.product?.length > 0 
+        ? draftData.product.map(product => ({
             productDescription: product.productDescription || '',
             unitCost: product.unitCost || '',
             quantity: product.quantity || '',
@@ -55,7 +54,8 @@ const CreateInvoice = () => {
               quantity: '',
             },
           ],
-      overdue: draftData ? draftData.overdue : '',
+          overdue: draftData ? new Date(draftData.overdue).toISOString().split('T')[0] : '',
+
       remark: draftData ? draftData.remark : '',
       amount: draftData ? draftData.amount : '',
     }
@@ -66,7 +66,7 @@ const CreateInvoice = () => {
         .matches(/^\d{8,10}$/, t('Mobile number must be between 8 and 10 digits.'))
         .required(t('Mobile number is required.')),
       email: Yup.string().email(t('Invalid email address')).required(t('Email is required.')),
-      products: Yup.array().of(
+      product: Yup.array().of(
         Yup.object().shape({
           productDescription: Yup.string().required(t('Product description is required.')),
           unitCost: Yup.number().required(t('Unit cost is required.')),
@@ -80,7 +80,7 @@ const CreateInvoice = () => {
       let value=calculateTotalAmount()
       console.log(value)
       values.amount = formik.values.includeVAT ?parseFloat(value) + parseFloat((value * 0.10).toFixed(2)) : 0; // Convert vatAmount back to a number
-        if (values.sendVia.sms || values.sendVia.email || values.sendVia.whatsapp) {
+        if (values.sendAtSMS || values.sendAtMail || values.sendAtWhatsapp) {
           sendInvoice(values);
         } else {
           saveDraft(values);
@@ -89,19 +89,19 @@ const CreateInvoice = () => {
   });
 
   const addProduct = () => {
-    formik.setFieldValue('products', [
-      ...formik.values.products,
+    formik.setFieldValue('product', [
+      ...formik.values.product,
       { productDescription: '', unitCost: '', quantity: '' },
     ]);
   };
 
   const removeProduct = (index) => {
-    const newProducts = formik.values.products.filter((_, i) => i !== index);
-    formik.setFieldValue('products', newProducts);
+    const newProducts = formik.values.product.filter((_, i) => i !== index);
+    formik.setFieldValue('product', newProducts);
   };
 
   const calculateTotalAmount = () => {
-    const total = formik.values.products.reduce((acc, product) => {
+    const total = formik.values.product.reduce((acc, product) => {
       const unitCost = parseFloat(product.unitCost) || 0;
       const quantity = parseFloat(product.quantity) || 0;
       return acc + unitCost * quantity;
@@ -119,11 +119,12 @@ const CreateInvoice = () => {
   
   const handleSendViaChange = (event) => {
     const { id, checked } = event.target;
-    formik.setFieldValue(`sendVia.${id}`, checked);
+    formik.setFieldValue(id, checked);
   };
 
 
-  const saveDraft = async (data) => {
+  const saveDraft = async () => {
+    let data =formik.values
     let value=calculateTotalAmount()
     console.log(value)
     data.amount = formik.values.includeVAT ?parseFloat(value) + parseFloat((value * 0.10).toFixed(2)) : 0; // Convert vatAmount back to a number
@@ -132,7 +133,6 @@ const CreateInvoice = () => {
       if (draftData) {
         data.draftId = draftData._id
       }
-      data.amount = formik.values.includeVAT ? parseFloat(value)+ parseFloat((value * 0.10).toFixed(2)) : 0; // Convert vatAmount back to a number
 
       console.log("🚀 ~ saveDraft ~ body:", data)
       const response = await CreateInvoiceApi(data);
@@ -314,7 +314,7 @@ const CreateInvoice = () => {
          
 
         {/* Products Section */}
-        {formik.values.products.map((product, index) => (
+        {formik.values.product.map((product, index) => (
           <div key={index} className="mb-4 row">
             {/* Product Description */}
             <div className="col-md-4">
@@ -322,18 +322,18 @@ const CreateInvoice = () => {
                 {t('Product Description')} <span className="text-danger">*</span>
               </label>
               <input
-                name={`products[${index}].productDescription`}
+                name={`product[${index}].productDescription`}
                 type="text"
                 className="form-control form-input"
                 placeholder={t('Enter Product Description')}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.products[index].productDescription}
+                value={formik.values.product[index].productDescription}
               />
-              {formik.touched.products?.[index]?.productDescription &&
-              formik.errors.products?.[index]?.productDescription ? (
+              {formik.touched.product?.[index]?.productDescription &&
+              formik.errors.product?.[index]?.productDescription ? (
                 <div className="text-danger">
-                  {formik.errors.products[index].productDescription}
+                  {formik.errors.product[index].productDescription}
                 </div>
               ) : null}
             </div>
@@ -344,17 +344,17 @@ const CreateInvoice = () => {
                 {t('Unit Cost')} <span className="text-danger">*</span>
               </label>
               <input
-                name={`products[${index}].unitCost`}
+                name={`product[${index}].unitCost`}
                 type="number"
                 className="form-control form-input"
                 placeholder={t('Enter Unit Cost')}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.products[index].unitCost}
+                value={formik.values.product[index].unitCost}
               />
-              {formik.touched.products?.[index]?.unitCost &&
-              formik.errors.products?.[index]?.unitCost ? (
-                <div className="text-danger">{formik.errors.products[index].unitCost}</div>
+              {formik.touched.product?.[index]?.unitCost &&
+              formik.errors.product?.[index]?.unitCost ? (
+                <div className="text-danger">{formik.errors.product[index].unitCost}</div>
               ) : null}
             </div>
 
@@ -364,17 +364,17 @@ const CreateInvoice = () => {
                 {t('Quantity')} <span className="text-danger">*</span>
               </label>
               <input
-                name={`products[${index}].quantity`}
+                name={`product[${index}].quantity`}
                 type="number"
                 className="form-control form-input"
                 placeholder={t('Enter Quantity')}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.products[index].quantity}
+                value={formik.values.product[index].quantity}
               />
-              {formik.touched.products?.[index]?.quantity &&
-              formik.errors.products?.[index]?.quantity ? (
-                <div className="text-danger">{formik.errors.products[index].quantity}</div>
+              {formik.touched.product?.[index]?.quantity &&
+              formik.errors.product?.[index]?.quantity ? (
+                <div className="text-danger">{formik.errors.product[index].quantity}</div>
               ) : null}
             </div>
 
@@ -481,11 +481,11 @@ const CreateInvoice = () => {
             <input
               className="form-check-input"
               type="checkbox"
-              id="sms"
-              checked={formik.values.sendVia.sms}
+              id="sendAtSMS"
+              checked={formik.values.sendAtSMS}
               onChange={handleSendViaChange}
             />
-            <label className="form-check-label" htmlFor="sms">
+            <label className="form-check-label" htmlFor="sendAtSMS">
               {t('SMS')}
             </label>
           </div>
@@ -495,11 +495,11 @@ const CreateInvoice = () => {
             <input
               className="form-check-input"
               type="checkbox"
-              id="email"
-              checked={formik.values.sendVia.email}
+              id="sendAtMail"
+              checked={formik.values.sendAtMail}
               onChange={handleSendViaChange}
             />
-            <label className="form-check-label" htmlFor="email">
+            <label className="form-check-label" htmlFor="sendAtMail">
               {t('Email')}
             </label>
           </div>

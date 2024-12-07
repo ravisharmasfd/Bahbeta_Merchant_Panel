@@ -13,6 +13,9 @@ import SecureRoute from './utils/SecureRoute';
 import { UserContext } from './store/context';
 import PaymentPage from './Components/payment';
 import TransactionPage from './Components/Transaction';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const App = () => {
   const [loading, setLoading] = useState(false);
@@ -38,6 +41,7 @@ const App = () => {
   useEffect(()=>{onLoadApp()},[])
   return (
     <UserContext.Provider value={{user , setUser, appLoaded}}>
+        <ToastContainer />
     <I18nextProvider i18n={i18n}>  {/* Wrap the app with I18nextProvider */}
       <BrowserRouter>
         <Routes>
