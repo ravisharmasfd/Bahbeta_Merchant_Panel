@@ -176,7 +176,7 @@ const CreateInvoice = () => {
       <div className="main-content flex-grow-1">
         <Header />
         <Container fluid>
-          <InvoiceOverview />
+          {/* <InvoiceOverview /> */}
           <Row>
             <Col>
               <div className="container mt-5">
