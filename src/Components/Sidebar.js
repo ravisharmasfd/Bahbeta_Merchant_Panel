@@ -34,10 +34,10 @@ const Sidebar = () => {
         </Nav.Link>
         <Nav.Link as={Link} to="/users" className="sidebar-link">
           <FaUsers className="me-2" /> Manage Users
-        </Nav.Link>
+        </Nav.Link>*/}
         <Nav.Link as={Link} to="/reports" className="sidebar-link">
           <FaChartPie className="me-2" /> Reports
-        </Nav.Link> */}
+        </Nav.Link> 
       </Nav>
 
       {/* Download App Section */}
