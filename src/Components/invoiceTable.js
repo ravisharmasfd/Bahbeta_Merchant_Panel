@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { DeleteInvoiceApi, GetInvoiceApi, GetInvoiceStatsApi } from '../services/api';
 import moment from 'moment';
 
-const InvoiceTable = () => {
+const InvoiceTable = ({isReport}) => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('invoices');
   const [stats,setStats] = useState(null)
@@ -282,7 +282,7 @@ const InvoiceTable = () => {
 </div>
 
 
-      {/* <div className="pagination-container d-flex align-items-center justify-content-between mt-3">
+     {isReport && <div className="pagination-container d-flex align-items-center justify-content-between mt-3">
         <div className="pagination-info d-flex align-items-center">
           <span className="me-2">Showing</span>
           <Form.Select onChange={(e)=>{
@@ -315,7 +315,7 @@ const InvoiceTable = () => {
             setPage(page + 1)
           }} className="page-item"><a className="page-link" >Next</a></li>}
         </ul>
-      </div> */}
+      </div>}
     </div>
   );
 };

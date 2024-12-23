@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Row, Col, Card } from 'react-bootstrap'; // Import necessary components from react-bootstrap
 import { GetInvoiceStatsApi } from '../services/api';
 
-const InvoiceOverview = () => {
+const InvoiceOverview = ({type}) => {
   const [stats,setStats] = useState(null)   
     const [loading, setLoading] = useState(true);
   const fetchInvoices = async () => {
@@ -29,7 +29,7 @@ const InvoiceOverview = () => {
       {/* Background container for the top half */}
       <div className="overview-background">
         <div className="d-flex justify-content-between align-items-center mb-4">
-          <h4 className="header-title">Invoices Overview</h4>
+          <h4 className="header-title">{type == "report"?"Report":"Invoices Overview"}</h4>
           {/* <div className="header-filters d-flex">
             <Form.Group className="me-3">
               <Form.Select aria-label="Sort By">
@@ -53,7 +53,7 @@ const InvoiceOverview = () => {
 
       {/* Overview Cards */}
       <div className="cards-container">
-  <Row>
+  {type!="report" && <Row>
   <Col md={3} className="padding-left">
       <Card className="overview-card paid">
         <Card.Body className="p-2">
@@ -105,7 +105,7 @@ const InvoiceOverview = () => {
     </Col>
 
   
-  </Row>
+  </Row>}
 </div>
     </div>
   );

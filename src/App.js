@@ -15,6 +15,8 @@ import PaymentPage from './Components/payment';
 import TransactionPage from './Components/Transaction';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Report from './Components/report';
+import Header from './Components/Header';
 
 
 const App = () => {
@@ -43,9 +45,13 @@ const App = () => {
     <UserContext.Provider value={{user , setUser, appLoaded}}>
         <ToastContainer />
     <I18nextProvider i18n={i18n}>  {/* Wrap the app with I18nextProvider */}
+    
       <BrowserRouter>
-        <Routes>
+{user &&      <Header />
+
+}        <Routes>
           <Route path="/payment" element={<TransactionPage/>} />
+          <Route path="/reports" element={<SecureRoute><Report /></SecureRoute>} />
           <Route path="/transaction" element={<PaymentPage/>} />
 
           <Route path="/login" element={<GuestRoute><Login /></GuestRoute>} />

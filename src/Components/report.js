@@ -6,16 +6,17 @@ import InvoiceTable from './invoiceTable';
 import { Container, Row, Col } from 'react-bootstrap';
 import '../css/Dashboard.css'; // Custom styles for layout
 
-const Dashboard = () => {
+const Report = () => {
   return (
     <div className="d-flex">
-      <Sidebar />
+      
+        <Sidebar></Sidebar>
       <div className="main-content flex-grow-1">
         <Container fluid>
-          <InvoiceOverview />
+          <InvoiceOverview type="report"/>
           <Row>
             <Col>
-              <InvoiceTable />
+              <InvoiceTable isReport={true}/>
             </Col>
           </Row>
         </Container>
@@ -24,4 +25,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Report;
