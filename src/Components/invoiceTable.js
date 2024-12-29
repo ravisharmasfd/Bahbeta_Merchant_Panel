@@ -5,11 +5,12 @@ import { FaEllipsisV, FaPlus, FaSearch } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { DeleteInvoiceApi, GetInvoiceApi, GetInvoiceStatsApi } from '../services/api';
 import moment from 'moment';
+import { Input } from 'react-select/animated';
 
-const InvoiceTable = ({isReport}) => {
+const InvoiceTable = ({ isReport }) => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('invoices');
-  const [stats,setStats] = useState(null)
+  const [stats, setStats] = useState(null)
   const [customerName, setCustomerName] = useState('');
   const [filterStatus, setFilterStatus] = useState('All');
   const [invoiceData, setInvoiceData] = useState([]);
@@ -22,6 +23,22 @@ const InvoiceTable = ({isReport}) => {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const handleStartDateChange = (e) => {
+    setStartDate(e.target.value);
+    // Ensure endDate is updated if it's less than the new startDate
+    if (endDate && e.target.value > endDate) {
+      setEndDate(e.target.value);
+    }
+  };
+
+  const handleEndDateChange = (e) => setEndDate(e.target.value);
+  const handleDownloadReport = () => {
+    console.log("Start Date:", startDate);
+    console.log("End Date:", endDate);
+    // Implement your report download logic here
+  };
   const fetchInvoices = async () => {
     try {
       setLoading(true)
@@ -30,6 +47,8 @@ const InvoiceTable = ({isReport}) => {
         limit,
         type: activeTab,
         status: filterStatus,
+        startDate,
+        endDate
 
       }
       const response = await GetInvoiceApi(query)
@@ -45,25 +64,25 @@ const InvoiceTable = ({isReport}) => {
       setLoading(false);
     }
   };
- 
+
   useEffect(() => {
     fetchInvoices();
-  }, [activeTab,customerName,limit,page]);
+  }, [activeTab, customerName, limit, page,startDate,endDate]);
 
-  const deleteDraft=async(id)=>{
+  const deleteDraft = async (id) => {
     try {
       const res = await DeleteInvoiceApi(id);
       await fetchInvoices()
     } catch (error) {
-      
+
     }
   }
-  const handleEdit=async(invoice)=>{
-    if(invoice.type == 1){
-      navigate("/create-invoice",{state:invoice})
+  const handleEdit = async (invoice) => {
+    if (invoice.type == 1) {
+      navigate("/create-invoice", { state: invoice })
     }
-    else{
-      navigate("/recurring-invoice",{state:invoice})
+    else {
+      navigate("/recurring-invoice", { state: invoice })
     }
   }
 
@@ -130,16 +149,41 @@ const InvoiceTable = ({isReport}) => {
             </Nav.Link>
           </Nav>
           <div className="col-md-6 d-flex justify-content-end align-items-center">
-            <Link to="/create-invoice" className="me-2">
-              <Button variant="primary">
-                <FaPlus /> New Invoice
-              </Button>
-            </Link>
-            <Link to="/recurring-invoice">
-              <Button variant="primary">
-                <FaPlus /> New Recurring Invoice
-              </Button>
-            </Link>
+            {isReport ? <>
+              
+              <div className="d-flex align-items-center me-2">
+            <input
+              type="date"
+              max={new Date().toISOString().split("T")[0]}
+              value={startDate}
+              onChange={handleStartDateChange}
+              className="form-control me-2"
+              placeholder="Start Date"
+            />
+            <input
+              type="date"
+              max={new Date().toISOString().split("T")[0]}
+              value={endDate}
+              onChange={handleEndDateChange}
+              className="form-control me-2"
+              placeholder="End Date"
+              min={startDate || "1970-01-01"} // Ensure endDate is >= startDate
+            />
+          </div>
+          <Button variant="primary" onClick={handleDownloadReport}>
+            <FaPlus /> Download Report
+          </Button>
+            </> : <>
+              <Link to="/create-invoice" className="me-2">
+                <Button variant="primary">
+                  <FaPlus /> New Invoice
+                </Button>
+              </Link>
+              <Link to="/recurring-invoice">
+                <Button variant="primary">
+                  <FaPlus /> New Recurring Invoice
+                </Button>
+              </Link></>}
           </div>
         </div>
       </div>
@@ -202,90 +246,90 @@ const InvoiceTable = ({isReport}) => {
         </div>
       </div> */}
 
-<div className="table-responsive">
-  {invoiceData.length > 0 ? (
-    <Table hover className="invoice-table">
-      <thead>
-        <tr>
-          <th>Invoice#</th>
-          <th>Invoice Date</th>
-          <th>Customer</th>
-          <th>Mobile Number</th>
-          {activeTab !== "drafts" && <th>Status</th>}
-          <th>Amount</th>
-          <th>Remarks</th>
-          {activeTab !== "paid" && <th>Actions</th>}
-        </tr>
-      </thead>
-      <tbody>
-        {invoiceData.map((invoice, index) => (
-          <tr key={index}>
-            <td>
-              <a href="#">{(page - 1) * limit + index + 1}</a>
-            </td>
-            <td>{moment(invoice.createdAt).format("DD MM YYYY")}</td>
-            <td>{invoice.name}</td>
-            <td>{invoice?.country_code + invoice?.mobile_no}</td>
-            {activeTab !== "drafts" && (
-              <td>
-                <Badge
-                  pill
-                  bg={
-                    invoice?.status === 2
-                      ? "success"
-                      : invoice?.status === 1
-                      ? "danger"
-                      : "warning"
-                  }
-                  className="invoice-status"
-                >
-                  {invoice?.status === 2 ? "Complete" : "Pending"}
-                </Badge>
-              </td>
-            )}
-            <td>{invoice?.amount} BHD</td>
-            <td>{invoice?.remark}</td>
-            <td>
-              <div className="flex">
-                {invoice?.status !== 2 && (
-                  <Dropdown align="end">
-                    <Dropdown.Toggle
-                      variant="light"
-                      id="dropdown-basic"
-                      className="action-icon"
-                    >
-                      <FaEllipsisV />
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      <Dropdown.Item onClick={() => handleEdit(invoice)}>
-                        Edit
-                      </Dropdown.Item>
-                      {activeTab === "drafts" && (
-                        <Dropdown.Item onClick={() => deleteDraft(invoice?._id)}>
-                          Delete
-                        </Dropdown.Item>
+      <div className="table-responsive">
+        {invoiceData.length > 0 ? (
+          <Table hover className="invoice-table">
+            <thead>
+              <tr>
+                <th>Invoice#</th>
+                <th>Invoice Date</th>
+                <th>Customer</th>
+                <th>Mobile Number</th>
+                {activeTab !== "drafts" && <th>Status</th>}
+                <th>Amount</th>
+                <th>Remarks</th>
+                {activeTab !== "paid" && <th>Actions</th>}
+              </tr>
+            </thead>
+            <tbody>
+              {invoiceData.map((invoice, index) => (
+                <tr key={index}>
+                  <td>
+                    <a href="#">{(page - 1) * limit + index + 1}</a>
+                  </td>
+                  <td>{moment(invoice.createdAt).format("DD MM YYYY")}</td>
+                  <td>{invoice.name}</td>
+                  <td>{invoice?.country_code + invoice?.mobile_no}</td>
+                  {activeTab !== "drafts" && (
+                    <td>
+                      <Badge
+                        pill
+                        bg={
+                          invoice?.status === 2
+                            ? "success"
+                            : invoice?.status === 1
+                              ? "danger"
+                              : "warning"
+                        }
+                        className="invoice-status"
+                      >
+                        {invoice?.status === 2 ? "Complete" : "Pending"}
+                      </Badge>
+                    </td>
+                  )}
+                  <td>{invoice?.amount} BHD</td>
+                  <td>{invoice?.remark}</td>
+                  <td>
+                    <div className="flex">
+                      {invoice?.status !== 2 && (
+                        <Dropdown align="end">
+                          <Dropdown.Toggle
+                            variant="light"
+                            id="dropdown-basic"
+                            className="action-icon"
+                          >
+                            <FaEllipsisV />
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu>
+                            <Dropdown.Item onClick={() => handleEdit(invoice)}>
+                              Edit
+                            </Dropdown.Item>
+                            {activeTab === "drafts" && (
+                              <Dropdown.Item onClick={() => deleteDraft(invoice?._id)}>
+                                Delete
+                              </Dropdown.Item>
+                            )}
+                          </Dropdown.Menu>
+                        </Dropdown>
                       )}
-                    </Dropdown.Menu>
-                  </Dropdown>
-                )}
-              </div>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </Table>
-  ) : (
-    <div className="text-center py-5">
-      <p>No data available</p>
-    </div>
-  )}
-</div>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        ) : (
+          <div className="text-center py-5">
+            <p>No data available</p>
+          </div>
+        )}
+      </div>
 
 
-     {isReport && <div className="pagination-container d-flex align-items-center justify-content-between mt-3">
+      {isReport && <div className="pagination-container d-flex align-items-center justify-content-between mt-3">
         <div className="pagination-info d-flex align-items-center">
           <span className="me-2">Showing</span>
-          <Form.Select onChange={(e)=>{
+          <Form.Select onChange={(e) => {
             setLimit(e.target.value)
           }} size="sm" className="entries-select">
             <option value={10}>10</option>
@@ -296,21 +340,21 @@ const InvoiceTable = ({isReport}) => {
         </div>
         <ul className="pagination mb-0">
           {page > 1 && <li className="page-item"
-          onClick={()=>{
-            setPage(page-1)
-          }}
+            onClick={() => {
+              setPage(page - 1)
+            }}
           ><a className="page-link" >Previous</a></li>}
-          <li className="page-item" 
+          <li className="page-item"
           ><a style={{
             color: "red"
           }} className="page-link" >{page}</a></li>
           {total.page >= page + 1 && <li className="page-item" onClick={() => {
             setPage(page + 1)
-          }}><a  className="page-link" >{page + 1}</a></li>}
-          {total.page >= page + 2 && <li 
-          onClick={() => {
-            setPage(page + 2)
-          }} className="page-item"><a className="page-link" >{page + 2}</a></li>}
+          }}><a className="page-link" >{page + 1}</a></li>}
+          {total.page >= page + 2 && <li
+            onClick={() => {
+              setPage(page + 2)
+            }} className="page-item"><a className="page-link" >{page + 2}</a></li>}
           {total.isNext && <li onClick={() => {
             setPage(page + 1)
           }} className="page-item"><a className="page-link" >Next</a></li>}
