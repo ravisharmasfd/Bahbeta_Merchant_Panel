@@ -64,7 +64,66 @@ const InvoiceTable = ({ isReport }) => {
       setLoading(false);
     }
   };
+  const downloadCSV = (jsonData) => {
+    try {
+      // Convert JSON to CSV
+    const headers = Object.keys(jsonData[0]).join(","); // Extract headers
+    const rows = jsonData.map((row) =>
+      Object.values(row)
+        .map((value) => `"${value}"`) // Quote values
+        .join(",")
+    );
 
+    const csvContent = [headers, ...rows].join("\n");
+
+    // Create Blob and Download
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "data.csv";
+    link.click();
+
+    URL.revokeObjectURL(url); // Clean up
+    } catch (error) {
+      console.log("🚀 ~ downloadCSV ~ error:", error)
+      
+    }
+  };
+  const downloadCSVFile = async () => {
+    try {
+      setLoading(true)
+      const query = {
+        page,
+        limit:100000000000,
+        type: activeTab,
+        status: filterStatus,
+        startDate,
+        endDate
+
+      }
+      const response = await GetInvoiceApi(query)
+      console.log("🚀 ~ downloadCSVFile ~ response:", response.invoices)
+      const newJsonParseDate = (response?.invoices||[]).map((item,index)=>{return{
+        "Invoice#":index+1,
+        "Invoice Date":moment(item?.createdAt).format("DD MM YYYY"),
+        "Customer":item?.name,
+        "Mobile Number":item?.country_code + item?.mobile_no,
+        "Status":item?.status === 2 ? "Complete" : "Pending",
+        "Amount":item?.amount + " BHD",
+        "Remarks":item?.remark
+      }})
+      console.log("🚀 ~ newJsonParseDate ~ newJsonParseDate:", newJsonParseDate)
+      if(newJsonParseDate?.length>0)downloadCSV(newJsonParseDate)
+      
+    } catch (error) {
+      console.log("🚀 ~ downloadCSVFile ~ error:", error)
+      
+  }finally{
+    setLoading(false)
+  }
+}
   useEffect(() => {
     fetchInvoices();
   }, [activeTab, customerName, limit, page,startDate,endDate]);
@@ -170,7 +229,7 @@ const InvoiceTable = ({ isReport }) => {
               min={startDate || "1970-01-01"} // Ensure endDate is >= startDate
             />
           </div>
-          <Button variant="primary" onClick={handleDownloadReport}>
+          <Button variant="primary" onClick={downloadCSVFile}>
             <FaPlus /> Download Report
           </Button>
             </> : <>
