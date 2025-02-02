@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { DeleteInvoiceApi, GetInvoiceApi, GetInvoiceStatsApi } from '../services/api';
 import moment from 'moment';
 import { Input } from 'react-select/animated';
+import { Oval } from 'react-loader-spinner';
 
 const InvoiceTable = ({ isReport }) => {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ const InvoiceTable = ({ isReport }) => {
     isNext: false,
     isPrevious: false,
   })
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [startDate, setStartDate] = useState("");
@@ -305,7 +306,17 @@ const InvoiceTable = ({ isReport }) => {
         </div>
       </div> */}
 
-      <div className="table-responsive">
+      {loading ? <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}><Oval
+  visible={true}
+  height="80"
+  width="80"
+  color="#0d6efd"
+  
+  ariaLabel="oval-loading"
+  wrapperStyle={{}}
+  wrapperClass=""
+  secondaryColor=''
+  /></div>:<div className="table-responsive">
         {invoiceData.length > 0 ? (
           <Table hover className="invoice-table">
             <thead>
@@ -382,7 +393,7 @@ const InvoiceTable = ({ isReport }) => {
             <p>No data available</p>
           </div>
         )}
-      </div>
+      </div>}
 
 
       {isReport && <div className="pagination-container d-flex align-items-center justify-content-between mt-3">
