@@ -1,18 +1,17 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import '../css/Login.css'; // Optional: Custom styles for the login page
+import Swal from 'sweetalert2';
+import '../css/Login.css';
 import { SignInApi } from '../services/api';
 import { UserContext } from '../store/context';
 
 const Login = () => {
   const navigate = useNavigate();
-  const {user,setUser} = useContext(UserContext)
+  const { setUser } = useContext(UserContext);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Formik form setup and validation
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -27,40 +26,47 @@ const Login = () => {
         .required('Password is required'),
     }),
     onSubmit: async (values) => {
+      setIsSubmitting(true);
       try {
-        // Replace this with actual login API logic
-        console.log("Login values:", values);
-        const {data} = await SignInApi(values)
-        console.log("🚀 ~ onSubmit: ~ res:", data)
-        // Mock login response
-        
-        if (data?.role == 2) {
-          toast.success('Login successful', {
-            position: 'top-right',
-            autoClose: 3000,
+        const { data } = await SignInApi(values);
+        if (data?.role === 2) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Login Successful',
+            text: 'You have successfully logged in!',
+            timer: 2000,
+            showConfirmButton: false,
+          }).then(() => {
+            setUser(data);
+            navigate('/');
           });
-          setUser(data)
-          navigate('/'); // Navigate to dashboard or any other route
         } else {
-          toast.error('Invalid credentials, please try again', {
-            position: 'top-right',
-            autoClose: 3000,
+          Swal.fire({
+            icon: 'error',
+            title: 'Invalid Credentials',
+            text: 'Please check your email and password and try again.',
+            timer: 3000,
+            showConfirmButton: false,
           });
         }
       } catch (error) {
-        console.error('Error logging in:', error);
-        toast.error(error?.response?.data?.message || 'Error logging in, please try again later', {
-          position: 'top-right',
-          autoClose: 3000,
+        Swal.fire({
+          icon: 'error',
+          title: 'Login Failed',
+          text: error?.response?.data?.message || 'Error logging in, please try again later.',
+          timer: 2000,
+          showConfirmButton: false,
         });
+      } finally {
+        setIsSubmitting(false);
       }
     },
   });
 
   return (
     <div className="login-container">
-      <div className="login-card">
-        <h2>Login</h2>
+      <div className="login-card shadow-lg p-4 rounded">
+        <h2 className="text-center mb-4">Login</h2>
         <form onSubmit={formik.handleSubmit}>
           <div className="mb-3">
             <label className="form-label">Email</label>
@@ -92,10 +98,15 @@ const Login = () => {
               <div className="text-danger">{formik.errors.password}</div>
             )}
           </div>
-          <button type="submit" className="btn btn-primary w-100">Login</button>
+          <button
+            type="submit"
+            className="btn btn-primary w-100"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? 'Logging in...' : 'Login'}
+          </button>
         </form>
       </div>
-      <ToastContainer />
     </div>
   );
 };
