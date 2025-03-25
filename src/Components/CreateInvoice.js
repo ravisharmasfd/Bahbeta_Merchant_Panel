@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Header from './Header';
 import Sidebar from './Sidebar';
-import InvoiceOverview from './InvoiceOverview';
-import { Container, Row, Col } from 'react-bootstrap';
+import Swal from 'sweetalert2';
+import { Container, Row, Col,Spinner } from 'react-bootstrap';
 import '../css/Dashboard.css';
 import '../i18n'; // Import i18n setup
 import { CreateInvoiceApi } from '../services/api';
@@ -28,6 +28,7 @@ const CreateInvoice = () => {
   const { t, i18n } = useTranslation();
   const [language, setLanguage] = useState('en');
 
+  const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -124,56 +125,68 @@ const CreateInvoice = () => {
 
 
   const saveDraft = async () => {
-    let data =formik.values
-    let value=calculateTotalAmount()
-    console.log(value)
-    data.amount = formik.values.includeVAT ?parseFloat(value) + parseFloat((value * 0.10).toFixed(2)) : 0; // Convert vatAmount back to a number
+    setLoading(true); // Show full-screen loader
+    let data = formik.values;
+    let value = calculateTotalAmount();
+    data.amount = formik.values.includeVAT ? parseFloat(value) + parseFloat((value * 0.10).toFixed(2)) : 0;
+
     try {
-      data.saveAsDraft= true
+      data.saveAsDraft = true;
       if (draftData) {
-        data.draftId = draftData._id
+        data.draftId = draftData._id;
       }
 
-      console.log("🚀 ~ saveDraft ~ body:", data)
       const response = await CreateInvoiceApi(data);
-      console.log('Draft saved', response);
-      navigate("/")
-      alert("draft saved successfully")
-      toast.success(t('draft saved successfully'), {
+      navigate("/");
+
+      toast.success(t('Draft Saved Successfully'), {
         position: 'top-right',
         autoClose: 3000,
       });
     } catch (error) {
       console.error('Error saving draft:', error);
+    } finally {
+      setLoading(false); 
     }
   };
 
   const sendInvoice = async (data) => {
+    setLoading(true); 
+
     try {
-      data.type=1
+      data.type = 1;
       if (draftData) {
-        data.draftId = draftData._id
+        data.draftId = draftData._id;
       }
-      console.log("🚀 ~ sendInvoice g ~ body:", data)
+
       const response = await CreateInvoiceApi(data);
-      navigate("/")
-      alert("invoice create successfully")
-      toast.success(t('invoice create successfully'), {
-        position: 'top-right',
-        autoClose: 3000,
+      navigate("/");
+console.log(draftData)
+      Swal.fire({
+        icon: 'success',
+        title: draftData== null ? t('Invoice Created Successfully') :t('Invoice Edited Successfully'),
+        showConfirmButton: false,
+        timer: 1500,
       });
-      console.log('Draft saved', response);
 
     } catch (error) {
       console.error('Error saving draft:', error);
+    } finally {
+      setLoading(false); // Hide full-screen loader
     }
-  }
+  };
 
 
   return (
+    
     <div className="d-flex">
       <Sidebar />
-      <div className="main-content flex-grow-1">
+      {loading ?(
+        <div className="full-screen-loader">
+          <Spinner animation="border" variant="light" />
+        </div>
+      ):(
+<div className="main-content flex-grow-1">
         <Header />
         <Container fluid>
           {/* <InvoiceOverview /> */}
@@ -538,6 +551,9 @@ const CreateInvoice = () => {
           </Row>
         </Container>
       </div>
+      )}
+
+      
       <ToastContainer />
     </div>
   );

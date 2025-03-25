@@ -68,7 +68,6 @@ const Header = () => {
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-              {/* <Dropdown.Item as={Link} to="/profile">Profile</Dropdown.Item> */}
               <Dropdown.Divider />
               <Dropdown.Item onClick={()=>{
                 setUser(null)

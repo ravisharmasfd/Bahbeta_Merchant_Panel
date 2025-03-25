@@ -20,9 +20,7 @@ const InvoiceOverview = ({type}) => {
   };
  
   useEffect(() => {
-
-
-    fetchInvoices();
+ fetchInvoices();
   }, []);
   return (
     <div className="invoice-overview mt-5">

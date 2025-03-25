@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Table, Badge, Dropdown, Button, Form, Nav, InputGroup } from 'react-bootstrap';
+import { Table, Badge, Dropdown, Button, Form, Nav, Modal  } from 'react-bootstrap';
 import { FaEllipsisV, FaPlus, FaSearch } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { DeleteInvoiceApi, GetInvoiceApi, GetInvoiceStatsApi } from '../services/api';
@@ -14,6 +14,8 @@ const InvoiceTable = ({ isReport }) => {
   const [stats, setStats] = useState(null)
   const [customerName, setCustomerName] = useState('');
   const [filterStatus, setFilterStatus] = useState('All');
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [draftIdToDelete, setDraftIdToDelete] = useState(null);
   const [invoiceData, setInvoiceData] = useState([]);
   const [total, setTotal] = useState({
     page: 0,
@@ -128,15 +130,24 @@ const InvoiceTable = ({ isReport }) => {
   useEffect(() => {
     fetchInvoices();
   }, [activeTab, customerName, limit, page,startDate,endDate]);
+  
 
-  const deleteDraft = async (id) => {
+  const handleDeleteClick = (id) => {
+    setDraftIdToDelete(id);
+    setShowDeleteModal(true);
+  };
+
+  const deleteDraft = async () => {
+    if (!draftIdToDelete) return;
     try {
-      const res = await DeleteInvoiceApi(id);
-      await fetchInvoices()
+      await DeleteInvoiceApi(draftIdToDelete);
+      setShowDeleteModal(false);
+      setDraftIdToDelete(null);
+      await fetchInvoices();
     } catch (error) {
-
+      console.error("Error deleting draft:", error);
     }
-  }
+  };
   const handleEdit = async (invoice) => {
     if (invoice.type == 1) {
       navigate("/create-invoice", { state: invoice })
@@ -375,7 +386,8 @@ const InvoiceTable = ({ isReport }) => {
                               Edit
                             </Dropdown.Item>
                             {activeTab === "drafts" && (
-                              <Dropdown.Item onClick={() => deleteDraft(invoice?._id)}>
+                              <Dropdown.Item onClick={() => handleDeleteClick(invoice?._id)}>
+
                                 Delete
                               </Dropdown.Item>
                             )}
@@ -430,6 +442,23 @@ const InvoiceTable = ({ isReport }) => {
           }} className="page-item"><a className="page-link" >Next</a></li>}
         </ul>
       </div>}
+      <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Delete</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Do you want to delete this draft payment?</p>
+          {/* <img src="/assets/delete-warning.png" alt="Warning" style={{ width: '100%' }} /> */}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+            No
+          </Button>
+          <Button variant="danger" onClick={deleteDraft}>
+            Yes, Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
